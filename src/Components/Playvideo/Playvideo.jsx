@@ -1,6 +1,6 @@
 import React from "react";
 import "./Playvideo.css";
-import video1 from "../../assets/video.mp4";
+import video1 from "../../assets/KarateVid.mp4";
 import like from "../../assets/like.png";
 import dislike from "../../assets/dislike.png";
 import share from "../../assets/share.png";

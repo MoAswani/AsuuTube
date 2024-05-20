@@ -2,7 +2,7 @@ import React from "react";
 import "./Navbar.css";
 import menu_icon from "../../assets/menu.png";
 import search_icon from "../../assets/search.png";
-import logo from "../../assets/logo.png";
+import logo from "../../assets/youtube-logo.png";
 import upload_icon from "../../assets/upload.png";
 import notification_icon from "../../assets/notification.png";
 import more_icon from "../../assets/more.png";
@@ -18,12 +18,11 @@ const Navbar = ({ setSidebar }) => {
           src={menu_icon}
           alt=""
         />
-        {/* <img className="logo" src={logo} alt="" /> */}
+        <img className="youtube-logo" src={logo} alt="" />
         <p className="logo">
           Asuu<span>Tube</span>
         </p>
       </div>
-
       <div className="nav-middle flex-div">
         <div className="search-box flex-div">
           <input type="text" placeholder="Search" />
