@@ -15,7 +15,7 @@ import moment from "moment";
 const Feed = ({ category }) => {
   const [data, setData] = useState([]);
   const fetchData = async () => {
-    const videoList_url = `https://youtube.googleapis.com/youtube/v3/videos?part=snippet&chart=mostPopular&maxResults=68&videoCategoryId=${category}&key=${API_KEY}`;
+    const videoList_url = `https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2C%20contentDetails%2C%20statistics&chart=mostPopular&maxResults=68&regionCode=ke&videoCategoryId=${category}&key=${API_KEY}`;
     await fetch(videoList_url)
       .then((response) => response.json())
       .then((data) => setData(data.items));
@@ -37,8 +37,10 @@ const Feed = ({ category }) => {
             <h2>{item.snippet.title}</h2>
             <h3>{item.snippet.channelTitle}</h3>
             <p>
-              Loading Views... &bull;{" "}
-              {moment(item.snippet.publishedAt).fromNow()}
+              {data
+                ? value_converter(item.statistics.viewCount)
+                : "Loading Views"}{" "}
+              &bull; {moment(item.snippet.publishedAt).fromNow()}
             </p>
           </Link>
         );

@@ -13,7 +13,7 @@ import moment from "moment";
 const Playvideo = ({ videoId }) => {
   const [apiData, setApiData] = useState(null);
   const fetchVideoData = async () => {
-    const videoData_url = `https://youtube.googleapis.com/youtube/v3/videos?part=snippet&chart=mostPopular&maxResults=68&videoCategoryId=${videoId}&key=${API_KEY}`;
+    const videoData_url = `https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2C%20contentDetails%2C%20statistics&id=${videoId}&key=${API_KEY}`;
     await fetch(videoData_url)
       .then((res) => res.json())
       .then((data) => setApiData(data.items[0]));
@@ -38,7 +38,7 @@ const Playvideo = ({ videoId }) => {
         <p>
           {apiData
             ? value_converter(apiData.statistics.viewCount)
-            : "Loading Views..."}{" "}
+            : "Loading viewCount"}{" "}
           &bull;{" "}
           {apiData
             ? moment(apiData.snippet.publishedAt).fromNow()
