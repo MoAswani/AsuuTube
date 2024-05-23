@@ -12,16 +12,31 @@ import moment from "moment";
 
 const Playvideo = ({ videoId }) => {
   const [apiData, setApiData] = useState(null);
+  const [channelData, setChannelData] = useState(null);
+
   const fetchVideoData = async () => {
+    //This is for Video data
     const videoData_url = `https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2C%20contentDetails%2C%20statistics&id=${videoId}&key=${API_KEY}`;
     await fetch(videoData_url)
       .then((res) => res.json())
       .then((data) => setApiData(data.items[0]));
   };
 
+  const fetchOtherData = async () => {
+    //This is for channel data
+    const channelData_url = `https://youtube.googleapis.com/youtube/v3/channels?part=snippet%2CcontentDetails%2Cstatistics&id=${apiData.snippet.channelId}&key=${API_KEY}`;
+    await fetch(channelData_url)
+      .then((res) => res.json())
+      .then((data) => setChannelData(data.items[0]));
+  };
+
   useEffect(() => {
     fetchVideoData();
   }, []);
+
+  useEffect(() => {
+    fetchOtherData();
+  }, [apiData]);
 
   return (
     <div className="play-video">
@@ -64,10 +79,18 @@ const Playvideo = ({ videoId }) => {
       </div>
       <hr />
       <div className="publisher">
-        <img src={jack} alt="" />
+        <img
+          src={channelData ? channelData.snippet.thumbnails.default.url : "L"}
+          alt=""
+        />
         <div>
           <p>{apiData ? apiData.snippet.channelTitle : "Channel Name"}</p>
-          <span>250 Subscribers</span>
+          <span>
+            {channelData
+              ? value_converter(channelData.statistics.subscriberCount)
+              : "Loading"}{" "}
+            Subscribers
+          </span>
         </div>
         <button>Subscribe</button>
       </div>
