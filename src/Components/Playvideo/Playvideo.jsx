@@ -13,6 +13,7 @@ import moment from "moment";
 const Playvideo = ({ videoId }) => {
   const [apiData, setApiData] = useState(null);
   const [channelData, setChannelData] = useState(null);
+  const [commentData, setCommentData] = useState([]);
 
   const fetchVideoData = async () => {
     //This is for Video data
@@ -28,6 +29,12 @@ const Playvideo = ({ videoId }) => {
     await fetch(channelData_url)
       .then((res) => res.json())
       .then((data) => setChannelData(data.items[0]));
+
+    //Fetching video comments
+    const comments_url = `https://youtube.googleapis.com/youtube/v3/commentThreads?part=snippet%2Creplies&maxResults=500&videoId=${videoId}&key=${API_KEY}`;
+    await fetch(comments_url)
+      .then((res) => res.json())
+      .then((data) => setCommentData(data.items));
   };
 
   useEffect(() => {
@@ -107,97 +114,41 @@ const Playvideo = ({ videoId }) => {
             : "Loading"}{" "}
           Comments
         </h4>
-        <div className="comment">
-          <img src={user_profile} alt="" />
-          <div>
-            <h3>
-              Arnold Yego <span>1 hours ago</span>
-            </h3>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fuga
-              corporis iure eos omnis cum mollitia ipsa tempore possimus hic
-              vel, neque culpa, quia optio?
-            </p>
-            <div className="comment-action">
-              <img src={like} alt="" />
-              <span>19 Likes</span>
-              <img src={dislike} alt="" />
+        {commentData.map((item, index) => {
+          return (
+            <div key={index} className="comment">
+              <img
+                src={
+                  commentData
+                    ? item.snippet.topLevelComment.snippet.authorProfileImageUrl
+                    : user_profile
+                }
+                alt=""
+              />
+              <div>
+                <h3>
+                  {item.snippet.topLevelComment.snippet.authorDisplayName}{" "}
+                  <span>
+                    {moment(
+                      item.snippet.topLevelComment.snippet.publishedAt
+                    ).fromNow()}
+                  </span>
+                </h3>
+                <p>{item.snippet.topLevelComment.snippet.textOriginal}</p>
+                <div className="comment-action">
+                  <img src={like} alt="" />
+                  <span>
+                    {value_converter(
+                      item.snippet.topLevelComment.snippet.likeCount
+                    )}{" "}
+                    Likes
+                  </span>
+                  <img src={dislike} alt="" />
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-
-        <div className="comment">
-          <img src={user_profile} alt="" />
-          <div>
-            <h3>
-              Jackline Kiswili <span>2 hours ago</span>
-            </h3>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fuga
-              corporis iure eos omnis cum mollitia ipsa tempore possimus hic
-              vel, neque culpa, quia optio?
-            </p>
-            <div className="comment-action">
-              <img src={like} alt="" />
-              <span>19 Likes</span>
-              <img src={dislike} alt="" />
-            </div>
-          </div>
-        </div>
-        <div className="comment">
-          <img src={user_profile} alt="" />
-          <div>
-            <h3>
-              Felics Getiria <span>3 hours ago</span>
-            </h3>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fuga
-              corporis iure eos omnis cum mollitia ipsa tempore possimus hic
-              vel, neque culpa, quia optio?
-            </p>
-            <div className="comment-action">
-              <img src={like} alt="" />
-              <span>19 Likes</span>
-              <img src={dislike} alt="" />
-            </div>
-          </div>
-        </div>
-        <div className="comment">
-          <img src={user_profile} alt="" />
-          <div>
-            <h3>
-              Stacy Medina <span>10 hours ago</span>
-            </h3>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fuga
-              corporis iure eos omnis cum mollitia ipsa tempore possimus hic
-              vel, neque culpa, quia optio?
-            </p>
-            <div className="comment-action">
-              <img src={like} alt="" />
-              <span>19 Likes</span>
-              <img src={dislike} alt="" />
-            </div>
-          </div>
-        </div>
-        <div className="comment">
-          <img src={user_profile} alt="" />
-          <div>
-            <h3>
-              Sammy Kinuthia <span>2 days ago</span>
-            </h3>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fuga
-              corporis iure eos omnis cum mollitia ipsa tempore possimus hic
-              vel, neque culpa, quia optio?
-            </p>
-            <div className="comment-action">
-              <img src={like} alt="" />
-              <span>19 Likes</span>
-              <img src={dislike} alt="" />
-            </div>
-          </div>
-        </div>
+          );
+        })}
       </div>
     </div>
   );
