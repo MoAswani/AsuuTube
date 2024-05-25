@@ -66,3 +66,8 @@ hr {
   border-radius: 4px;
   padding: 6px 6px;
 }
+@media (max-width: 900px) {
+  .sidebar {
+    display: none;
+  }
+}
