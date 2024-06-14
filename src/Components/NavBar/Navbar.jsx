@@ -6,7 +6,7 @@ import logo from "../../assets/youtube-logo.png";
 import upload_icon from "../../assets/upload.png";
 import notification_icon from "../../assets/notification.png";
 import more_icon from "../../assets/more.png";
-import profile_icon from "../../assets/jack.png";
+import profile_icon from "../../assets/moha.jpg";
 import { Link } from "react-router-dom";
 
 const Navbar = ({ setSidebar }) => {
